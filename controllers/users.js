@@ -2,8 +2,12 @@ const { response } = require('express');
 const { json } = require('express/lib/response');
 
 const userGet = (req, res = response)=> {
+
+    const {q,page} =req.query
     res.status(200).json({
-        msg: 'get API - Controller'
+        msg: 'get API - Controller',
+        q,
+        page
     });
 };
 const userPost = (req, res = response)=> {
@@ -11,6 +15,7 @@ const userPost = (req, res = response)=> {
     const {nombre,edad} = req.body
 
     res.status(200).json({
+
         msg: 'post API - Controller',
         response: {
             nombre,
@@ -19,8 +24,13 @@ const userPost = (req, res = response)=> {
     });
 };
 const userPut = (req, res = response)=> {
+
+    const {id,q} = req.params
+
     res.status(200).json({
-        msg: 'put API - Controller'
+        msg: 'put API - Controller',
+        id,
+        q
     });
 };
 const userPatch = (req, res = response)=> {

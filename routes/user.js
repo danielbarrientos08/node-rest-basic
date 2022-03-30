@@ -4,7 +4,7 @@ const {  userGet, userPost, userDelete, userPatch, userPut, userUpdate } = requi
 const router = Router()
 
 router.get('/', userGet);
-router.put('/', userPut);
+router.put('/:id', userPut);
 router.post('/', userPost);
 router.post('/', userUpdate);
 router.patch('/', userPatch);

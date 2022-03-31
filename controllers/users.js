@@ -23,13 +23,7 @@ const userPost = async(req, res = response)=> {
 
     const user = new User({name,email,password,role})
 
-    //Verificar si el correo existe
-    const existsEmail = await User.findOne({email})
-    if(existsEmail){
-        return res.status(422).json({
-            error:'El email ya esta en uso.'
-        })
-    }
+
     //Encriptar password
     const salt = bcryptjs.genSaltSync(10)
     user.password = bcryptjs.hashSync(password,salt)

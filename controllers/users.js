@@ -37,8 +37,6 @@ const userPost = async(req, res = response)=> {
     await user.save()
 
     res.status(201).json({
-
-        msg: 'post API - Controller',
         user
     });
 };

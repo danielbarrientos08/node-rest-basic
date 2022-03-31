@@ -2,6 +2,7 @@ const { Router } = require('express');
 const {check} = require('express-validator')
 const {  userGet, userPost, userDelete, userPatch, userPut, userUpdate } = require('../controllers/users');
 const {validateInputs} = require('../middlewares/validate-inputs')
+const Role = require('../models/role')
 
 const router = Router()
 
@@ -12,7 +13,13 @@ router.put('/:id', userPut);
 router.post('/',[
     check('name','El nombre es obligatorio').not().isEmpty(),
     check('password','El password debe ser mas de 6 caracteres').isLength({min: 6}),
-    check('role','No es un rol válido').isIn(['ADMIN_ROLE','USER_ROLE']),
+    // check('role','No es un rol válido').isIn(['ADMIN_ROLE','USER_ROLE']),
+    check('role').custom(async (name = '')=>{
+        const existsRole = await Role.findOne({name})
+        if(! existsRole){
+            throw  new Error(`El rol ${name} no existe.`)
+        }
+    }),
     check('email','email no válido').isEmail(),
     validateInputs
 ], userPost);

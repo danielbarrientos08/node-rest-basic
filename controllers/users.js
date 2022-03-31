@@ -5,13 +5,29 @@ const bcryptjs = require('bcryptjs')
 
 const User = require('../models/user')
 
-const userGet = (req, res = response)=> {
+const userGet = async (req, res = response)=> {
 
-    const {q,page} =req.query
+    const { limit=5,from=0 } = req.query
+    const filter = {status:true}
+
+    // const users = await User.find( filter )
+    //                         .skip(Number(from))
+    //                         .limit(Number(limit))
+
+    // const total = await User.countDocuments( filter )
+
+    const [total,data] = await Promise.all([
+        User.countDocuments( filter ),
+        User.find(filter)
+            .skip(Number(from))
+            .limit(Number(limit))         
+    ])
+
     res.status(200).json({
-        msg: 'get API - Controller',
-        q,
-        page
+        total,
+        data,
+        from: Number(from),
+        limit: Number(limit)
     });
 };
 
@@ -46,14 +62,10 @@ const userPut = async (req, res = response)=> {
         const salt = bcryptjs.genSaltSync(10)
         resto.password = bcryptjs.hashSync(password,salt)
     }
-    
+
     const user = await User.findByIdAndUpdate(id,resto)
     
-    res.status(200).json({
-        msg: 'datos actualizados',
-        user
-      
-    });
+    res.status(200).json(user);
 };
 const userPatch = (req, res = response)=> {
     res.status(200).json({

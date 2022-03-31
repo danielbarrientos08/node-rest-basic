@@ -72,16 +72,19 @@ const userPatch = (req, res = response)=> {
         msg: 'patch API - Controller'
     });
 };
-const userDelete = (req, res = response)=> {
+const userDelete = async (req, res = response)=> {
+
+    const {id} = req.params
+    //borrado fisico
+    // const user = await User.findByIdAndDelete(id)
+    const user = await User.findByIdAndUpdate(id,{status:false})
+
+
     res.status(200).json({
-        msg: 'delete API - Controller'
+        user
     });
 };
-const userUpdate = (req, res = response)=> {
-    res.status(200).json({
-        msg: 'update API - Controller'
-    });
-};
+
 
 
 module.exports = {
@@ -89,6 +92,5 @@ module.exports = {
     userDelete,
     userPatch,
     userPut,
-    userUpdate,
     userPost
 }

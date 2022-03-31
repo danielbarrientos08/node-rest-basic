@@ -26,11 +26,15 @@ router.post('/',[
     validateInputs
 ], userPost);
 
-router.post('/', userUpdate);
+
 
 router.patch('/', userPatch);
 
-router.delete('/', userDelete);
+router.delete('/:id',[
+    check('id','No es un id válido. ').isMongoId(),
+    check('id').custom( existsUser ),
+    validateInputs
+], userDelete);
 
 
 module.exports = router

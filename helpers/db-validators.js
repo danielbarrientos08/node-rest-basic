@@ -1,6 +1,6 @@
 
-const Role = require('../models/role')
-const User = require('../models/user')
+const { Category,Role, User } = require('../models')
+
 
 const existsRole = async (name = '')=>{
     const existsRole = await Role.findOne({name})
@@ -24,10 +24,40 @@ const existsUser = async (id = '')=>{
     }
 }
 
+const existsCategory = async (id = '')=>{
+    const existCategory = await Category.findById(id)
+    if(! existCategory || existCategory.status == false){
+        
+        throw  new Error(`La categoría con id ${id} no existe o esta bloqueada.`)
+    }
+}
+
+const unique =   (input=null,model=null,ignoreId=null)=> {
+
+    return async (req, res = response, next)=>{
+
+        if(input!=null && model!= null ){
+            throw  new Error(`los parámetros input y model son requeridos`)
+        }
+
+        const existsValue = await model.findOne(input)
+        console.log('El valor es: ',existsValue)
+
+        // if( ! roles.includes(req.user.role)){
+        //     return res.status(401).json({
+        //         msg:`El servicio require uno de estos roles:  ${roles}`
+        //     })
+        // }
+
+        next()
+    }
+}
 
 module.exports = {
     existsRole,
     uniqueEmail,
-    existsUser
+    existsUser,
+    unique,
+    existsCategory
 
 }

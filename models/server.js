@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 const {dbConnection} = require('../database/config')
+const fileUpload = require('express-fileupload');
 
 require('dotenv').config()
 
@@ -15,7 +16,8 @@ class Server {
             seacrh:  '/api/search',
             users: '/api/users',
             categories: '/api/categories',
-            products: '/api/products'
+            products: '/api/products',
+            uploads: '/api/uploads'
         }
       
 
@@ -42,6 +44,11 @@ class Server {
         this.app.use(express.json())
         //Directorio público
         this.app.use( express.static('public'))
+        //Fileupload 
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/'
+        }));
     }
 
     routes() {
@@ -50,6 +57,7 @@ class Server {
        this.app.use(  this.routesPath.auth, require('../routes/auth') )
        this.app.use(  this.routesPath.categories, require('../routes/category') )
        this.app.use(  this.routesPath.products, require('../routes/product') )
+       this.app.use(  this.routesPath.uploads, require('../routes/upload') )
     }
 
     listen () {

@@ -12,8 +12,10 @@ class Server {
         this.port = process.env.PORT 
         this.routesPath = {
             auth:  '/api/auth',
+            seacrh:  '/api/search',
             users: '/api/users',
-            categories: '/api/categories'
+            categories: '/api/categories',
+            products: '/api/products'
         }
       
 
@@ -44,8 +46,10 @@ class Server {
 
     routes() {
        this.app.use(  this.routesPath.users, require('../routes/user') )
+       this.app.use(  this.routesPath.seacrh, require('../routes/search') )
        this.app.use(  this.routesPath.auth, require('../routes/auth') )
        this.app.use(  this.routesPath.categories, require('../routes/category') )
+       this.app.use(  this.routesPath.products, require('../routes/product') )
     }
 
     listen () {

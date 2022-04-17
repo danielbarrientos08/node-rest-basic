@@ -1,5 +1,5 @@
 
-const { Category,Role, User } = require('../models')
+const { Category,Role, User, Product } = require('../models')
 
 
 const existsRole = async (name = '')=>{
@@ -32,6 +32,14 @@ const existsCategory = async (id = '')=>{
     }
 }
 
+const existsProduct = async (id = '')=>{
+    const existProduct = await Product.findById(id)
+    if(! existProduct || existProduct.status == false){
+        
+        throw  new Error(`El producto con id ${id} no existe o esta bloqueada.`)
+    }
+}
+
 const unique =   (input=null,model=null,ignoreId=null)=> {
 
     return async (req, res = response, next)=>{
@@ -58,6 +66,7 @@ module.exports = {
     uniqueEmail,
     existsUser,
     unique,
-    existsCategory
+    existsCategory,
+    existsProduct,
 
 }

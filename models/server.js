@@ -13,7 +13,7 @@ class Server {
         this.port = process.env.PORT 
         this.routesPath = {
             auth:  '/api/auth',
-            seacrh:  '/api/search',
+            search:  '/api/search',
             users: '/api/users',
             categories: '/api/categories',
             products: '/api/products',
@@ -47,13 +47,14 @@ class Server {
         //Fileupload 
         this.app.use(fileUpload({
             useTempFiles : true,
-            tempFileDir : '/tmp/'
+            tempFileDir : '/tmp/',
+            createParentPath: true,
         }));
     }
 
     routes() {
        this.app.use(  this.routesPath.users, require('../routes/user') )
-       this.app.use(  this.routesPath.seacrh, require('../routes/search') )
+       this.app.use(  this.routesPath.search, require('../routes/search') )
        this.app.use(  this.routesPath.auth, require('../routes/auth') )
        this.app.use(  this.routesPath.categories, require('../routes/category') )
        this.app.use(  this.routesPath.products, require('../routes/product') )

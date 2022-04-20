@@ -5,10 +5,6 @@ const { User, Product} = require('../models');
 
 const uploadFile = async(req, res = response) => {
 
-    if (!req.files || Object.keys(req.files).length === 0 || !req.files.myFile) {
-        res.status(400).json({msg:'No files were uploaded.'});
-        return;
-    }
     try {
         // const name = await uploadFileHelper(req.files,['txt','pdf'],'textos');
         const name = await uploadFileHelper(req.files,undefined,'imgs');
@@ -30,7 +26,6 @@ const updateImage = async(req, res = response) => {
             }
             break;
         case 'products':
-            console.log('entro a case products');
             model = await Product.findById(id);
             if (!model) {
                 return res.status(400).json({msg: `No existe un producto con id : ${id}`});
@@ -39,7 +34,6 @@ const updateImage = async(req, res = response) => {
         default:
             return res.status(500).json({msg: 'Algo salio mal :C '});
     }
-    console.log('el file es: ',req.files);
     model.img = await uploadFileHelper(req.files,undefined, collection);
     model.save();
     res.json({ model })

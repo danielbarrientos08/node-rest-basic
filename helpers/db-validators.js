@@ -61,6 +61,21 @@ const unique =   (input=null,model=null,ignoreId=null)=> {
     }
 }
 
+/**
+ * Validar colecciones
+ */
+const validCollections = ( collection = '', collections = []) => {
+
+    const include = collections.includes( collection );
+    if (!include) {
+        throw new Error(`La colección ${collection} no es permitida en: ${collections} `)    
+    }
+
+    return true;
+}
+
+
+
 module.exports = {
     existsRole,
     uniqueEmail,
@@ -68,5 +83,5 @@ module.exports = {
     unique,
     existsCategory,
     existsProduct,
-
+    validCollections
 }

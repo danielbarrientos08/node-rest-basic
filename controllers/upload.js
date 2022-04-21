@@ -2,6 +2,9 @@
 const { response } = require('express')
 const { uploadFileHelper } = require('../helpers')
 const { User, Product} = require('../models');
+const path = require('path')
+const fs = require('fs')
+
 
 const uploadFile = async(req, res = response) => {
 
@@ -34,6 +37,15 @@ const updateImage = async(req, res = response) => {
         default:
             return res.status(500).json({msg: 'Algo salio mal :C '});
     }
+    //subir archivos
+
+    if (model.img) {
+        const imgPath = path.join(__dirname, '../uploads', collection,model.img);
+        if( fs.existsSync(imgPath)) {
+            fs.unlinkSync(imgPath);
+        }
+    }
+  
     model.img = await uploadFileHelper(req.files,undefined, collection);
     model.save();
     res.json({ model })
